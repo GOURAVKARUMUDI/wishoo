@@ -1,0 +1,129 @@
+.container {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  padding: var(--space-xl) var(--space-md);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0.5;
+}
+
+.letterCard {
+  position: relative;
+  z-index: 2;
+  background: #FAF7F2;
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl) var(--space-lg);
+  max-width: 380px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(212, 180, 131, 0.35);
+}
+
+.greeting {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+  text-align: center;
+  font-weight: 600;
+}
+
+.body {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
+  font-weight: 500;
+}
+
+.paragraph {
+  margin-bottom: var(--space-md);
+  min-height: 1.7em;
+  word-break: break-word;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--color-primary-dark);
+  margin-left: 2px;
+  animation: blink 0.8s ease-in-out infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.closing {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  margin-top: var(--space-lg);
+}
+
+.signature {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  margin-top: var(--space-xs);
+  font-weight: 600;
+}
+
+.buttonContainer {
+  margin-top: var(--space-xl);
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+}
+
+.paperTexture {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  opacity: 0.8;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 26px,
+    rgba(138, 110, 93, 0.08) 26px,
+    rgba(138, 110, 93, 0.08) 27px
+  );
+  pointer-events: none;
+}
+
+.decorFlower {
+  position: absolute;
+  font-size: 1.8rem;
+  opacity: 0.25;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.flower1 {
+  top: 8%;
+  right: 6%;
+  animation: float 5s ease-in-out infinite;
+}
+
+.flower2 {
+  bottom: 12%;
+  left: 6%;
+  animation: float 6s ease-in-out infinite 1s;
+}

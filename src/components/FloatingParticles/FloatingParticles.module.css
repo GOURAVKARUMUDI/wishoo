@@ -1,0 +1,35 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-base);
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  bottom: -40px;
+  animation: storybookDrift linear infinite;
+  will-change: transform;
+  user-select: none;
+}
+
+@keyframes storybookDrift {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateY(-50vh) translateX(25px) rotate(15deg) scale(1);
+  }
+  85% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(-20px) rotate(-15deg) scale(0.8);
+    opacity: 0;
+  }
+}

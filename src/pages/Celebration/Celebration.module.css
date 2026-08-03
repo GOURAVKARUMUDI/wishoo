@@ -1,0 +1,161 @@
+.container {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: var(--space-2xl) var(--space-xl) var(--space-4xl);
+  gap: var(--space-lg);
+}
+
+.petalContainer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  bottom: -30px;
+  animation: petalFloat linear infinite;
+  will-change: transform;
+}
+
+@keyframes petalFloat {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg) scale(1);
+    opacity: 0;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  max-width: 360px;
+  width: 100%;
+}
+
+.headerEmoji {
+  font-size: 3.5rem;
+  margin-bottom: var(--space-xs);
+}
+
+.title {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--space-md);
+}
+
+.messageBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+  margin: var(--space-xs) 0;
+}
+
+.message {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.messageBreak {
+  height: var(--space-sm);
+}
+
+.closingText {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-xl);
+  color: var(--color-primary-dark);
+  margin-top: var(--space-lg);
+}
+
+.signature {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  margin-top: var(--space-xs);
+}
+
+.buttonContainer {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: center;
+  margin-top: var(--space-xl);
+}
+
+.glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 180, 131, 0.12) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.closingContent {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  min-height: 45vh;
+}
+
+.closingTitle {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.closingSubtitle {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-2xl);
+  color: var(--color-primary-dark);
+  line-height: 1.4;
+}
+
+.closingSignature {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--space-lg);
+  letter-spacing: 0.05em;
+}

@@ -1,0 +1,117 @@
+.container {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-2xl) var(--space-md) var(--space-2xl);
+  touch-action: none;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0.6;
+}
+
+.header {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.scratchArea {
+  position: relative;
+  z-index: 5;
+  width: 330px;
+  max-width: 90vw;
+  min-height: 220px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--glass-border);
+  background: #FAF7F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-md) 0;
+}
+
+.hiddenMessage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-lg);
+  background: linear-gradient(135deg, #FAF7F2 0%, #F5EFE6 100%);
+  text-align: center;
+  z-index: 1;
+}
+
+.messageText {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-line;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.scratchCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+  border-radius: var(--radius-xl);
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 2;
+}
+
+.sparkle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.instruction {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  min-height: 24px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  min-height: 54px;
+}
