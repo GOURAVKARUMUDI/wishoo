@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { IoLockClosedOutline, IoLockOpenOutline, IoArrowForward } from 'react-icons/io5';
+import { IoLockClosedOutline, IoLockOpenOutline, IoArrowForward, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import AnimatedButton from '../../components/AnimatedButton/AnimatedButton.jsx';
 import FloatingParticles from '../../components/FloatingParticles/FloatingParticles.jsx';
 import styles from './Login.module.css';
 
 export default function Login({ onUnlock }) {
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
   const [isUnlocking, setIsUnlocking] = useState(false);
@@ -116,7 +117,7 @@ export default function Login({ onUnlock }) {
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputWrapper}>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               className={`${styles.input} ${error ? styles.inputError : ''}`}
               placeholder="Enter Access Code"
               value={password}
@@ -127,6 +128,14 @@ export default function Login({ onUnlock }) {
               disabled={isUnlocking}
               autoFocus
             />
+            <button
+              type="button"
+              className={styles.eyeToggle}
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Hide access code' : 'Show access code'}
+            >
+              {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+            </button>
           </div>
 
           {error && (

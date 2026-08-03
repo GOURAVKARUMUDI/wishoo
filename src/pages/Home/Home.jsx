@@ -16,18 +16,14 @@ export default function Home() {
     <PageTransition>
       <div className={styles.container}>
         <div className={styles.background} />
-        <div className={`${styles.decorCircle} ${styles.circle1}`} aria-hidden="true" />
-        <div className={`${styles.decorCircle} ${styles.circle2}`} aria-hidden="true" />
-        <div className={`${styles.decorCircle} ${styles.circle3}`} aria-hidden="true" />
-
         <FloatingHearts count={10} />
 
         <div className={styles.content}>
           <motion.h1
             className={styles.title}
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7, type: 'spring' }}
+            transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
           >
             For Mahii 🌸
           </motion.h1>
@@ -36,7 +32,7 @@ export default function Home() {
             className={styles.subtitle}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
           >
             A small little surprise...
             <br />Just because I wanted to make you smile.
@@ -44,9 +40,9 @@ export default function Home() {
 
           <motion.div
             className={styles.envelopeWrapper}
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, type: 'spring', stiffness: 200 }}
+            transition={{ delay: 0.6, type: 'spring', stiffness: 200 }}
           >
             <Envelope onOpen={handleEnvelopeOpen} />
           </motion.div>
@@ -54,8 +50,8 @@ export default function Home() {
           <motion.p
             className={styles.tapText}
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0.5, 1] }}
-            transition={{ delay: 1.2, duration: 2, repeat: Infinity }}
+            animate={{ opacity: [0.4, 0.9, 0.4] }}
+            transition={{ delay: 1, duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
           >
             Tap whenever you're ready
           </motion.p>

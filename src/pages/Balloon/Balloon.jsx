@@ -18,11 +18,11 @@ export default function Balloon() {
     return BALLOON_MESSAGES.map((msg, i) => ({
       ...msg,
       id: i,
-      x: randomBetween(10, 75),
-      y: randomBetween(5, 70),
-      floatDelay: randomBetween(0, 2),
-      floatDuration: randomBetween(2.5, 4),
-      size: randomBetween(0.9, 1.2),
+      x: randomBetween(8, 72),
+      y: randomBetween(5, 68),
+      floatDelay: randomBetween(0, 1.8),
+      floatDuration: randomBetween(2.8, 4.2),
+      size: randomBetween(0.9, 1.15),
     }));
   }, []);
 
@@ -45,7 +45,7 @@ export default function Balloon() {
 
     setPopped((prev) => new Set([...prev, balloon.id]));
     setCurrentMessage(balloon.text);
-    setTimeout(() => setCurrentMessage(null), 2000);
+    setTimeout(() => setCurrentMessage(null), 2400);
   }, [popped]);
 
   const allPopped = popped.size === balloons.length;
@@ -60,11 +60,13 @@ export default function Balloon() {
   return (
     <PageTransition>
       <div className={styles.container}>
+        {/* Clean, un-crowded header */}
         <div className={styles.header}>
           <motion.h1
             className={styles.title}
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
             A Few Things I Want You to Know 🎈
           </motion.h1>
@@ -72,7 +74,7 @@ export default function Balloon() {
             className={styles.subtitle}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
           >
             Pop each one gently
           </motion.p>
@@ -90,7 +92,7 @@ export default function Balloon() {
                     top: `${b.y}%`,
                   }}
                   onClick={(e) => handlePop(b, e)}
-                  initial={{ opacity: 0, scale: 0, y: 50 }}
+                  initial={{ opacity: 0, scale: 0, y: 30 }}
                   animate={{
                     opacity: 1,
                     scale: b.size,
@@ -114,7 +116,7 @@ export default function Balloon() {
                       delay: b.floatDelay,
                     },
                   }}
-                  whileHover={{ scale: b.size * 1.15 }}
+                  whileHover={{ scale: b.size * 1.12 }}
                   whileTap={{ scale: b.size * 0.9 }}
                   aria-label={`Pop balloon ${b.id + 1}`}
                 >
@@ -146,17 +148,20 @@ export default function Balloon() {
           )}
         </div>
 
+        {/* Centered Glass Popup Notification — 100% Mobile Safe */}
         <AnimatePresence>
           {currentMessage && (
-            <motion.div
-              className={styles.message}
-              initial={{ opacity: 0, scale: 0.5, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: -10 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              <p className={styles.messageText}>{currentMessage}</p>
-            </motion.div>
+            <div className={styles.popupOverlay} aria-live="polite">
+              <motion.div
+                className={styles.popupCard}
+                initial={{ opacity: 0, scale: 0.88, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.92, y: -10 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              >
+                <p className={styles.popupText}>{currentMessage}</p>
+              </motion.div>
+            </div>
           )}
         </AnimatePresence>
 
@@ -167,8 +172,9 @@ export default function Balloon() {
         {allPopped && (
           <motion.div
             className={styles.allPopped}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 250, damping: 20 }}
           >
             <p className={styles.allPoppedText}>That’s everything I wanted to say 🌸</p>
             <AnimatedButton onClick={() => navigate('/scratch')} shimmer icon={<IoArrowForward />}>
