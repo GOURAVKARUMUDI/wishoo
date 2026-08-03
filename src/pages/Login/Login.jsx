@@ -11,22 +11,65 @@ export default function Login({ onUnlock }) {
   const [shake, setShake] = useState(false);
   const [isUnlocking, setIsUnlocking] = useState(false);
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     if (e) e.preventDefault();
     if (isUnlocking) return;
 
-    if (password.trim().toLowerCase() === 'mahii') {
-      setError(false);
-      setIsUnlocking(true);
-      sessionStorage.setItem('mahii-unlocked', 'true');
-      setTimeout(() => {
-        if (onUnlock) onUnlock();
-      }, 1000);
-    } else {
+    const trimmed = password.trim();
+    if (!trimmed) {
       setError(true);
       setShake(true);
       setTimeout(() => setShake(false), 500);
+      return;
     }
+
+    try {
+      // Attempt Vercel Serverless Function validation
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: trimmed }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setError(false);
+          setIsUnlocking(true);
+          sessionStorage.setItem('mahii-unlocked', 'true');
+          if (data.token) {
+            sessionStorage.setItem('mahii-session-token', data.token);
+          }
+          setTimeout(() => {
+            if (onUnlock) onUnlock();
+          }, 1000);
+          return;
+        }
+      }
+
+      // If API returned 401 or non-OK JSON
+      if (response.status === 401) {
+        setError(true);
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+        return;
+      }
+    } catch (err) {
+      // Fallback for static dev environment where Vercel function server is offline
+      if (trimmed.toLowerCase() === 'mahii') {
+        setError(false);
+        setIsUnlocking(true);
+        sessionStorage.setItem('mahii-unlocked', 'true');
+        setTimeout(() => {
+          if (onUnlock) onUnlock();
+        }, 1000);
+        return;
+      }
+    }
+
+    setError(true);
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
   }, [password, isUnlocking, onUnlock]);
 
   return (
