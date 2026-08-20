@@ -124,7 +124,7 @@ function installDevApi() {
           if (result.blob.size) {
             res.setHeader('Content-Length', result.blob.size);
           }
-          const { Readable } = require('node:stream');
+          const { Readable } = await import('node:stream');
           Readable.fromWeb(result.stream).pipe(res);
         } catch (error) {
           console.error('Dev photo retrieval error:', error);

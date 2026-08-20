@@ -1,4 +1,5 @@
 import { get } from '@vercel/blob';
+import { Readable } from 'node:stream';
 import fs from 'node:fs';
 import path from 'node:path';
 import { verifySessionFromRequest, isBirthdayUnlockedInIST } from './_auth.js';
@@ -130,7 +131,7 @@ export default async function handler(req, res) {
     if (result.blob.size) {
       res.setHeader('Content-Length', result.blob.size);
     }
-    const { Readable } = require('node:stream');
+
     return Readable.fromWeb(result.stream).pipe(res);
   } catch (err) {
     console.error('Photo retrieval error:', err);
