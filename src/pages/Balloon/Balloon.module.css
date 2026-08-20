@@ -1,0 +1,180 @@
+.container {
+  min-height: 100dvh;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header {
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  margin-bottom: var(--space-xs);
+  max-width: 360px;
+  width: 100%;
+}
+
+.title {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.balloonArea {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 52vh;
+  min-height: 340px;
+  z-index: 2;
+}
+
+.balloon {
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.balloonBody {
+  width: 60px;
+  height: 72px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  position: relative;
+  box-shadow: inset -6px -3px 10px rgba(0, 0, 0, 0.07),
+    inset 6px 3px 10px rgba(255, 255, 255, 0.6),
+    0 6px 16px rgba(58, 53, 53, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.balloonBody::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top-width: 9px;
+  border-top-style: solid;
+  border-top-color: inherit;
+}
+
+.balloonShine {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  width: 14px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+}
+
+.balloonString {
+  width: 1px;
+  height: 38px;
+  background: rgba(58, 53, 53, 0.2);
+}
+
+/* Glassmorphism Notification Popup - Responsive & Perfectly Centered */
+.popupOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: var(--space-md);
+  pointer-events: none;
+}
+
+.popupCard {
+  pointer-events: auto;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-xl) var(--space-lg);
+  box-shadow: var(--shadow-xl);
+  text-align: center;
+  max-width: min(340px, 86vw);
+  width: 100%;
+}
+
+.popupText {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.counter {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--space-sm);
+  position: relative;
+  z-index: 5;
+}
+
+.popParticles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.popParticle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: popBurst 0.6s ease-out forwards;
+}
+
+@keyframes popBurst {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.allPopped {
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  margin-top: var(--space-md);
+}
+
+.allPoppedText {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}

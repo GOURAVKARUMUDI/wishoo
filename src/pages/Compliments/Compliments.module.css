@@ -1,0 +1,162 @@
+.container {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-xl) var(--space-md) var(--space-3xl);
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0.5;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.title {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.cardsContainer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.cardWrapper {
+  width: 100%;
+  max-width: 330px;
+  padding: 0 var(--space-sm);
+}
+
+.card {
+  width: 100%;
+  min-height: 280px;
+  border-radius: var(--radius-2xl);
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(212, 180, 131, 0.3);
+  cursor: grab;
+  touch-action: pan-y;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+.cardEmoji {
+  font-size: 3.2rem;
+}
+
+.cardText {
+  font-family: var(--font-handwriting);
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  line-height: 1.45;
+  font-weight: 500;
+  max-width: 270px;
+}
+
+.cardNumber {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.cardShine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
+  );
+  animation: cardShimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes cardShimmer {
+  0% { transform: translateX(-100%) rotate(0deg); }
+  100% { transform: translateX(100%) rotate(0deg); }
+}
+
+.indicators {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: var(--space-lg);
+  position: relative;
+  z-index: 2;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(58, 53, 53, 0.15);
+  transition: all var(--transition-base);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.indicatorActive {
+  width: 22px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-dark);
+}
+
+.swipeHint {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-top: var(--space-xs);
+  position: relative;
+  z-index: 2;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-lg);
+  position: relative;
+  z-index: 2;
+}

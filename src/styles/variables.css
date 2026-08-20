@@ -1,0 +1,117 @@
+:root {
+  /* Warm Journal Palette */
+  --color-cream: #F8F5F2;
+  --color-dusty-blue: #A8C5D8;
+  --color-sage: #B8CBB8;
+  --color-lavender: #D9D2E9;
+  --color-beige: #E8DCC8;
+  --color-gold: #D4B483;
+
+  /* Theme mappings */
+  --color-primary: #B89685;
+  --color-primary-light: #E8DCC8;
+  --color-primary-dark: #8C6D5D;
+  --color-secondary: #A8C5D8;
+  --color-accent: #B8CBB8;
+
+  /* Calming Journal Gradients */
+  --gradient-primary: linear-gradient(135deg, #F8F5F2 0%, #F1ECE6 50%, #E8DCC8 100%);
+  --gradient-sunset: linear-gradient(135deg, #D4B483 0%, #B8CBB8 50%, #A8C5D8 100%);
+  --gradient-warm: linear-gradient(135deg, #F8F5F2 0%, #E8DCC8 100%);
+  --gradient-cool: linear-gradient(135deg, #F0F4F8 0%, #D9D2E9 100%);
+  --gradient-lavender: linear-gradient(135deg, #F5F2F9 0%, #D9D2E9 100%);
+  --gradient-peach: linear-gradient(135deg, #F8F5F2 0%, #E8DCC8 100%);
+  --gradient-sage: linear-gradient(135deg, #F2F6F2 0%, #B8CBB8 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.2) 100%);
+
+  /* Backgrounds */
+  --bg-primary: #F8F5F2;
+  --bg-secondary: #F1ECE6;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-glass: rgba(255, 255, 255, 0.55);
+  --bg-overlay: rgba(58, 53, 53, 0.2);
+
+  /* Text */
+  --text-primary: #3A3535;
+  --text-secondary: #6B6363;
+  --text-tertiary: #999090;
+  --text-inverse: #FFFFFF;
+  --text-accent: #B89685;
+
+  /* Glass Effect */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(212, 180, 131, 0.3);
+  --glass-shadow: 0 8px 24px rgba(58, 53, 53, 0.05);
+  --glass-blur: blur(16px);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(58, 53, 53, 0.03);
+  --shadow-md: 0 4px 16px rgba(58, 53, 53, 0.05);
+  --shadow-lg: 0 8px 28px rgba(58, 53, 53, 0.07);
+  --shadow-xl: 0 16px 40px rgba(58, 53, 53, 0.09);
+  --shadow-glow: 0 0 24px rgba(212, 180, 131, 0.2);
+  --shadow-pink: 0 4px 16px rgba(184, 150, 133, 0.15);
+
+  /* Border Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-2xl: 38px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-xs: clamp(4px, 0.5vw, 8px);
+  --space-sm: clamp(8px, 1vw, 12px);
+  --space-md: clamp(14px, 2vw, 20px);
+  --space-lg: clamp(20px, 3vw, 28px);
+  --space-xl: clamp(28px, 4vw, 40px);
+  --space-2xl: clamp(40px, 5vw, 56px);
+  --space-3xl: clamp(56px, 7vw, 76px);
+
+  /* Typography with Fluid CSS clamp() */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-handwriting: 'Dancing Script', 'Caveat', cursive;
+
+  --text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.85rem);
+  --text-sm: clamp(0.85rem, 0.8rem + 0.3vw, 0.95rem);
+  --text-base: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  --text-lg: clamp(1.1rem, 1rem + 0.4vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.45rem);
+  --text-2xl: clamp(1.45rem, 1.3rem + 0.8vw, 1.85rem);
+  --text-3xl: clamp(1.85rem, 1.6rem + 1.2vw, 2.4rem);
+  --text-4xl: clamp(2.3rem, 1.9rem + 1.8vw, 3rem);
+  --text-5xl: clamp(2.8rem, 2.2rem + 2.5vw, 3.6rem);
+
+  /* Transitions */
+  --transition-fast: 200ms ease;
+  --transition-base: 400ms ease;
+  --transition-slow: 700ms ease;
+
+  /* Z-index scale */
+  --z-base: 1;
+  --z-elevated: 10;
+  --z-overlay: 100;
+  --z-modal: 200;
+  --z-toast: 300;
+  --z-progress: 500;
+
+  /* Layout */
+  --max-width: 460px;
+  --min-width: 320px;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #211E1E;
+  --bg-secondary: #2C2828;
+  --bg-card: rgba(44, 40, 40, 0.9);
+  --bg-glass: rgba(44, 40, 40, 0.55);
+
+  --text-primary: #F8F5F2;
+  --text-secondary: #D9D2E9;
+  --text-tertiary: #A8C5D8;
+
+  --glass-bg: rgba(44, 40, 40, 0.55);
+  --glass-border: rgba(212, 180, 131, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
