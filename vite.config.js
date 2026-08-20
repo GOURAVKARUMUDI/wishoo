@@ -121,8 +121,11 @@ function installDevApi() {
           const result = await get(pathname, { access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN });
           if (!result) return sendJson(res, 404, { error: 'Photo not found' });
           res.setHeader('Content-Type', result.blob.contentType || contentTypeFor(pathname));
-          const buffer = Buffer.from(await result.blob.arrayBuffer());
-          res.end(buffer);
+          if (result.blob.size) {
+            res.setHeader('Content-Length', result.blob.size);
+          }
+          const { Readable } = require('node:stream');
+          Readable.fromWeb(result.stream).pipe(res);
         } catch (error) {
           console.error('Dev photo retrieval error:', error);
           return sendJson(res, 502, { error: 'That memory could not be retrieved right now.' });

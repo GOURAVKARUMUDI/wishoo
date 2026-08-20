@@ -127,8 +127,11 @@ export default async function handler(req, res) {
     }
 
     res.setHeader('Content-Type', result.blob.contentType || contentTypeFor(pathname));
-    const arrayBuffer = await result.blob.arrayBuffer();
-    return res.status(200).send(Buffer.from(arrayBuffer));
+    if (result.blob.size) {
+      res.setHeader('Content-Length', result.blob.size);
+    }
+    const { Readable } = require('node:stream');
+    return Readable.fromWeb(result.stream).pipe(res);
   } catch (err) {
     console.error('Photo retrieval error:', err);
     return res.status(502).json({ error: 'That memory could not be retrieved right now.' });
