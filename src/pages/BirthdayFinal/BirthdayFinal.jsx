@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import Confetti from 'react-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
-import { IoBulbOutline, IoSparkles, IoHeart, IoReload } from 'react-icons/io5';
+import { IoBulbOutline, IoSparkles, IoHeart, IoReload, IoArrowForward, IoMailOutline } from 'react-icons/io5';
 import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import ThreeBirthdayCake from '../../components/ThreeBirthdayCake/ThreeBirthdayCake.jsx';
-import { BIRTHDAY_YEAR } from '../../config/birthdayConfig.js';
+import { useNavigate } from 'react-router-dom';
 import styles from './BirthdayFinal.module.css';
-
-const BIRTHDAY_AGE = Math.max(1, new Date().getFullYear() - parseInt(BIRTHDAY_YEAR, 10));
+import hbdUrl from '../../assets/music/hbd.mp3';
 
 const balloons = Array.from({ length: 38 }, (_, i) => ({
   left: `${2 + ((i * 29) % 96)}%`,
@@ -19,31 +18,90 @@ const balloons = Array.from({ length: 38 }, (_, i) => ({
 const lights = Array.from({ length: 30 }, (_, i) => i);
 
 export default function BirthdayFinal() {
+  const navigate = useNavigate();
   const [power, setPower] = useState(false);
   const [stage, setStage] = useState(0);
   const [again, setAgain] = useState(0);
+  const notesRef = useRef(null);
 
   useEffect(() => {
     if (!power) return undefined;
     setStage(1);
     const timers = [
-      setTimeout(() => setStage(2), 1100),
-      setTimeout(() => setStage(3), 2500),
-      setTimeout(() => setStage(4), 3900),
-      setTimeout(() => setStage(5), 6100),
+      setTimeout(() => setStage(2), 700),
+      setTimeout(() => setStage(3), 1700),
+      setTimeout(() => setStage(4), 2700),
+      setTimeout(() => setStage(5), 3800),
     ];
     return () => timers.forEach(clearTimeout);
   }, [power, again]);
 
+  useEffect(() => {
+    if (stage >= 5 && notesRef.current) {
+      notesRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [stage]);
+
+  const musicRef = useRef(null);
+
+  useEffect(() => {
+    if (!power) {
+      if (musicRef.current) {
+        musicRef.current.pause();
+        musicRef.current.currentTime = 0;
+      }
+      return;
+    }
+
+    if (!musicRef.current) {
+      const audio = new Audio(hbdUrl);
+      audio.loop = true;
+      audio.volume = 0.2; // subtle background level
+      musicRef.current = audio;
+    }
+
+    const playAudio = () => {
+      if (musicRef.current) {
+        musicRef.current.play().catch((err) => console.log('HBD music play prevented:', err));
+      }
+    };
+
+    playAudio();
+
+    const handleInteraction = () => {
+      playAudio();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      if (musicRef.current) {
+        musicRef.current.pause();
+      }
+    };
+  }, [power]);
+
   const turnEverythingOff = () => {
     setPower(false);
     setStage(0);
+    if (musicRef.current) {
+      musicRef.current.pause();
+      musicRef.current.currentTime = 0;
+    }
   };
 
   const celebrateAgain = () => {
     setStage(0);
     setAgain((v) => v + 1);
     setPower(true);
+    if (musicRef.current) {
+      musicRef.current.currentTime = 0;
+    }
   };
 
   const confettiPieces = useMemo(() => power && stage >= 3, [power, stage]);
@@ -122,10 +180,15 @@ export default function BirthdayFinal() {
               )}
 
               {stage >= 5 && (
-                <motion.div className={styles.notes} initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }}>
+                <motion.div ref={notesRef} className={styles.notes} initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                   <div className={styles.thankYou}><IoHeart /><div><strong>A little thank you.</strong><p>Thank you for being you, for the trust, the conversations, the laughter, and all the little moments that made this worth creating.</p></div></div>
                   <div className={styles.gestureNote}><span>ONE LAST LITTLE GESTURE 🌼</span><p className={styles.maxxLine}>Enjoy your birthday to the maxx. 🎂✨</p><p>Now stop thinking about this website and go make memories, smile a lot, eat something amazing, take too many pictures, and let yourself have the happiest day possible.</p></div>
                   <div className={styles.signature}>With all the warmth,<br /><b>— Tinku 🌼</b></div>
+                  <button className={styles.finalNoteButton} onClick={() => navigate('/birthday/thank-you')} aria-label="Open the finale note">
+                    <IoMailOutline />
+                    <span>Read Finale Note & Message</span>
+                    <IoArrowForward />
+                  </button>
                   <button className={styles.replay} onClick={celebrateAgain}><IoReload /> Light it up again</button>
                   <button className={styles.offButton} onClick={turnEverythingOff}>Turn the lights off</button>
                 </motion.div>

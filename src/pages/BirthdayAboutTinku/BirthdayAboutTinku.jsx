@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { IoArrowForward, IoHeartOutline, IoSparklesOutline } from 'react-icons/io5';
+import { IoArrowForward, IoHeartOutline, IoSparklesOutline, IoVolumeMediumOutline, IoVolumeMuteOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import styles from './BirthdayAboutTinku.module.css';
+import histhemeUrl from '../../assets/music/histheme.m4a';
 
 const sections = [
   {
@@ -70,11 +72,70 @@ const sections = [
 
 export default function BirthdayAboutTinku() {
   const navigate = useNavigate();
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!audioRef.current) {
+      const audio = new Audio(histhemeUrl);
+      audio.loop = true;
+      audio.volume = 0.35; // clear, calming volume
+      audioRef.current = audio;
+    }
+
+    const playAudio = () => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.play().catch((err) => console.log('His Theme play prevented, waiting for tap:', err));
+      }
+    };
+
+    playAudio();
+
+    const handleInteraction = () => {
+      if (isPlaying) playAudio();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('pointerdown', handleInteraction);
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+    window.addEventListener('pointerdown', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('pointerdown', handleInteraction);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [isPlaying]);
+
+  const toggleAudio = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <PageTransition>
       <main className={styles.page}>
         <div className={styles.glowOne} />
         <div className={styles.glowTwo} />
+
+        <button 
+          className={styles.musicToggle} 
+          onClick={toggleAudio} 
+          aria-label={isPlaying ? "Mute music" : "Play music"}
+        >
+          {isPlaying ? <IoVolumeMediumOutline size={18} /> : <IoVolumeMuteOutline size={18} />}
+        </button>
         <section className={styles.content}>
           <motion.div className={styles.heroIcon} initial={{ scale: .7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: .7 }}>
             <IoHeartOutline />

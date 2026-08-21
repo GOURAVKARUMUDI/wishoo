@@ -7,6 +7,7 @@ import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import FloatingParticles from '../../components/FloatingParticles/FloatingParticles.jsx';
 import { getBirthdayTargetDate, getFormattedBirthdayDate } from '../../config/birthdayConfig.js';
 import styles from './Birthday.module.css';
+import popUrl from '../../assets/music/pop.mp3';
 
 const balloons = Array.from({ length: 28 }, (_, i) => ({ id: i, left: `${3 + ((i * 37) % 94)}%`, delay: `${(i % 9) * .18}s`, duration: `${6 + (i % 5)}s`, hue: ['#d9d2e9','#b8cbb8','#a8c5d8','#e8dcc8','#d4b483','#f0c7d4'][i % 6] }));
 
@@ -35,6 +36,14 @@ export default function Birthday() {
   useEffect(() => {
     if (reached) setCelebrating(true);
   }, [reached]);
+
+  useEffect(() => {
+    if (celebrating) {
+      const popAudio = new Audio(popUrl);
+      popAudio.volume = 0.5;
+      popAudio.play().catch((err) => console.log('Celebration sound play prevented:', err));
+    }
+  }, [celebrating]);
 
   const handleDevSkip = () => {
     if (!canSkip) return;

@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { IoArrowForward, IoHeart, IoSparklesOutline } from 'react-icons/io5';
+import { IoArrowForward, IoHeart, IoSparklesOutline, IoVolumeMediumOutline, IoVolumeMuteOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import styles from './BirthdayWhatYouMean.module.css';
+import reunitedUrl from '../../assets/music/reunited.m4a';
 
 const sections = [
   {
@@ -48,13 +50,75 @@ const sections = [
 
 export default function BirthdayWhatYouMean() {
   const navigate = useNavigate();
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!audioRef.current) {
+      const audio = new Audio(reunitedUrl);
+      audio.loop = true;
+      audio.volume = 0.35; // clear, gentle volume
+      audioRef.current = audio;
+    }
+
+    const playAudio = () => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.play().catch((err) => console.log('Reunited play prevented, waiting for tap:', err));
+      }
+    };
+
+    playAudio();
+
+    const handleInteraction = () => {
+      if (isPlaying) playAudio();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('pointerdown', handleInteraction);
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+    window.addEventListener('pointerdown', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('pointerdown', handleInteraction);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [isPlaying]);
+
+  const toggleAudio = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <PageTransition>
       <main className={styles.page}>
         <div className={styles.glowOne} />
         <div className={styles.glowTwo} />
+
+        <button 
+          className={styles.musicToggle} 
+          onClick={toggleAudio} 
+          aria-label={isPlaying ? "Mute music" : "Play music"}
+        >
+          {isPlaying ? <IoVolumeMediumOutline size={18} /> : <IoVolumeMuteOutline size={18} />}
+        </button>
+
         <section className={styles.content}>
-          <motion.div className={styles.heroIcon} initial={{ scale: .7, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} transition={{ duration: .7 }}><IoHeart /></motion.div>
+          <motion.div className={styles.heroIcon} initial={{ scale: .7, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} transition={{ duration: .7 }}>
+            <IoHeart />
+          </motion.div>
           <motion.span className={styles.eyebrow} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>04 • WHAT YOU MEAN TO ME</motion.span>
           <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .12 }}>What You Mean To Me 🤍</motion.h1>
           <motion.p className={styles.opening} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .28 }}>Okay, Mahii... this is probably the part I've never really known how to explain.</motion.p>

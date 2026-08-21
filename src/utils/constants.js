@@ -104,4 +104,5 @@ export const ROUTES = [
   { path: '/birthday/what-you-mean-to-me', label: 'What You Mean To Me', index: 12 },
   { path: '/birthday/gifts', label: 'Gifts', index: 13 },
   { path: '/birthday/final', label: 'Final Celebration', index: 14 },
+  { path: '/birthday/thank-you', label: 'Finale Note', index: 15 },
 ];

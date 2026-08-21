@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { IoArrowForward, IoSparklesOutline } from 'react-icons/io5';
+import { IoArrowForward, IoSparklesOutline, IoVolumeMediumOutline, IoVolumeMuteOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import { PHOTO_IDS } from '../../config/birthdayPhotos.js';
 import { loadPhotoObjectUrl } from '../../utils/blobClient.js';
 import styles from './BirthdayPhotos.module.css';
+import bgmUrl from '../../assets/music/bgm.mp3';
 
 // Each photo gets its own caption, told in short lines rather than one block.
 const PHOTO_CAPTIONS = [
@@ -163,6 +164,59 @@ export default function BirthdayPhotos() {
   const [stage, setStage] = useState('intro');
   const [index, setIndex] = useState(0);
   const [polaroidEnded, setPolaroidEnded] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (stage === 'intro' || stage === 'loading') {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      return;
+    }
+
+    if (!audioRef.current) {
+      const audio = new Audio(bgmUrl);
+      audio.loop = true;
+      audio.volume = 0.12; // Extremely quiet/subtle even at 100% device volume
+      audioRef.current = audio;
+    }
+
+    audioRef.current.muted = isMuted;
+
+    const playAudio = () => {
+      if (audioRef.current && !isMuted) {
+        audioRef.current.play().catch((error) => {
+          console.log('Autoplay prevented, waiting for interaction:', error);
+        });
+      }
+    };
+
+    // Try playing immediately
+    playAudio();
+
+    // Fallback: start audio on first click/tap if blocked
+    const handleInteraction = () => {
+      playAudio();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [stage, isMuted]);
+
+  const toggleMute = () => {
+    setIsMuted((prev) => !prev);
+  };
 
   useEffect(() => {
     if (stage !== 'intro') return undefined;
@@ -234,6 +288,13 @@ export default function BirthdayPhotos() {
       <main className={styles.page}>
         <div className={styles.filmGrain} />
         <div className={styles.ambientOrb} />
+
+        {stage !== 'intro' && (
+          <button className={styles.musicToggle} onClick={toggleMute} aria-label={isMuted ? 'Unmute music' : 'Mute music'}>
+            {isMuted ? <IoVolumeMuteOutline size={18} /> : <IoVolumeMediumOutline size={18} />}
+          </button>
+        )}
+
         <section className={styles.content}>
 
           {stage === 'intro' && (
@@ -316,6 +377,16 @@ export default function BirthdayPhotos() {
                     <p>Maybe these were just pictures.</p>
                     <p>But to me...</p>
                     <p>they were little glimpses of you.</p>
+
+                    <div className={styles.heartMessage}>
+                      <p>There’s something I’ve wanted to tell you for a while, but I never really knew how to say it without making things awkward.</p>
+                      <p>From the beginning, I’ve always treated you as someone very close to my heart. You’ve become genuinely special to me, and somewhere along the way, the way I see you became different from the usual “anna–chelli” kind of relationship. I’m telling you this not to make you uncomfortable, change anything suddenly, or put any pressure on you.</p>
+                      <p>I just wanted you to know what you mean to me, because you deserve to know the truth behind all the little things I’ve done.</p>
+                      <p>Please don’t take this in the wrong way. Your feelings are your own, and I genuinely respect them.</p>
+                      <p>At the end of the day, the final call is always yours. Whatever you choose, whatever you feel, I’ll respect it—and I’ll always be grateful that you became someone so special in my life. ❤️</p>
+                      <p style={{ marginTop: '12px', color: '#ffe3a0', fontWeight: '600' }}>Please don’t get angry or overthink right now — just complete the whole experience first. A sincere request from me. 🤍</p>
+                    </div>
+
                     <button className={styles.collageButton} onClick={() => setStage('transition')}>Continue <IoArrowForward /></button>
                   </motion.div>
                 )}

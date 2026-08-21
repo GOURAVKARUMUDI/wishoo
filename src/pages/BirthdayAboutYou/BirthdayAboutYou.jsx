@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { IoArrowForward, IoLeafOutline, IoSparklesOutline, IoHeartOutline } from 'react-icons/io5';
+import { IoArrowForward, IoLeafOutline, IoSparklesOutline, IoHeartOutline, IoVolumeMediumOutline, IoVolumeMuteOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import styles from './BirthdayAboutYou.module.css';
+import memoryUrl from '../../assets/music/memory.m4a';
 
 const qualities = [
   ['01', 'Your quiet charm', "You're calm and reserved, and you don't simply open yourself up to everyone. But when you become comfortable with someone, there is a completely different side of you that comes out. That quiet side is one of the things that makes you special."],
@@ -15,13 +17,95 @@ const qualities = [
 
 export default function BirthdayAboutYou() {
   const navigate = useNavigate();
-  return <PageTransition><main className={styles.page}><div className={styles.leafOne}>🌿</div><div className={styles.leafTwo}>🌼</div><section className={styles.content}>
-    <motion.div className={styles.icon} initial={{ scale: .7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}><IoHeartOutline /></motion.div>
-    <span className={styles.eyebrow}>01 • ABOUT YOU</span><h1>About You 🌼</h1>
-    <motion.p className={styles.intro} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>Before I tell you about me or about us, I wanted to tell you about the person I see when I look at you.</motion.p>
-    <div className={styles.cards}>{qualities.map(([number, title, text], i) => <motion.article key={title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .1 + i * .08 }}><span className={styles.number}>{number}</span>{i === 0 ? <IoLeafOutline /> : i === 5 ? <IoSparklesOutline /> : null}<h2>{title}</h2><p>{text}</p></motion.article>)}</div>
-    <blockquote>“If I had even 1% of the courage and confidence I see in you, I'd be a completely different person.”</blockquote>
-    <p className={styles.bottomNote}>And yes, I'm officially putting the 🧿 here because some people are simply too beautiful to leave unprotected.</p>
-    <button className={styles.nextButton} onClick={() => navigate('/birthday/photos')}>See Your Memories <IoArrowForward /></button>
-  </section></main></PageTransition>;
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!audioRef.current) {
+      const audio = new Audio(memoryUrl);
+      audio.loop = true;
+      audio.volume = 0.15; // clear, beautiful background volume
+      audioRef.current = audio;
+    }
+
+    const playAudio = () => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.play().catch((err) => console.log('Memory play prevented, waiting for tap:', err));
+      }
+    };
+
+    playAudio();
+
+    const handleInteraction = () => {
+      if (isPlaying) playAudio();
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('pointerdown', handleInteraction);
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+    window.addEventListener('pointerdown', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('pointerdown', handleInteraction);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [isPlaying]);
+
+  const toggleAudio = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch(() => { });
+      setIsPlaying(true);
+    }
+  };
+
+  return (
+    <PageTransition>
+      <main className={styles.page}>
+        <div className={styles.leafOne}>🌿</div>
+        <div className={styles.leafTwo}>🌼</div>
+
+        <button
+          className={styles.musicToggle}
+          onClick={toggleAudio}
+          aria-label={isPlaying ? "Mute music" : "Play music"}
+        >
+          {isPlaying ? <IoVolumeMediumOutline size={18} /> : <IoVolumeMuteOutline size={18} />}
+        </button>
+
+        <section className={styles.content}>
+          <motion.div className={styles.icon} initial={{ scale: .7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+            <IoHeartOutline />
+          </motion.div>
+          <span className={styles.eyebrow}>01 • ABOUT YOU</span>
+          <h1>About You 🌼</h1>
+          <motion.p className={styles.intro} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
+            Before I tell you about me or about us, I wanted to tell you about the person I see when I look at you.
+          </motion.p>
+          <div className={styles.cards}>
+            {qualities.map(([number, title, text], i) => (
+              <motion.article key={title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .1 + i * .08 }}>
+                <span className={styles.number}>{number}</span>
+                {i === 0 ? <IoLeafOutline /> : i === 5 ? <IoSparklesOutline /> : null}
+                <h2>{title}</h2>
+                <p>{text}</p>
+              </motion.article>
+            ))}
+          </div>
+          <blockquote>“If I had even 1% of the courage and confidence I see in you, I'd be a completely different person.”</blockquote>
+          <p className={styles.bottomNote}>And yes, I'm officially putting the 🧿 here because some people are simply too beautiful to leave unprotected.</p>
+          <button className={styles.nextButton} onClick={() => navigate('/birthday/photos')}>See Your Memories <IoArrowForward /></button>
+        </section>
+      </main>
+    </PageTransition>
+  );
 }

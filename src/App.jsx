@@ -23,6 +23,7 @@ const BirthdayAboutTinku = lazy(() => import('./pages/BirthdayAboutTinku/Birthda
 const BirthdayGifts = lazy(() => import('./pages/BirthdayGifts/BirthdayGifts.jsx'));
 const BirthdayFinal = lazy(() => import('./pages/BirthdayFinal/BirthdayFinal.jsx'));
 const BirthdayWhatYouMean = lazy(() => import('./pages/BirthdayWhatYouMean/BirthdayWhatYouMean.jsx'));
+const BirthdayThankYou = lazy(() => import('./pages/BirthdayThankYou/BirthdayThankYou.jsx'));
 
 function PageLoader() {
   return (
@@ -129,6 +130,7 @@ export default function App() {
             <Route path="/birthday/what-you-mean-to-me" element={<BirthdayWhatYouMean />} />
             <Route path="/birthday/gifts" element={<BirthdayGifts />} />
             <Route path="/birthday/final" element={<BirthdayFinal />} />
+            <Route path="/birthday/thank-you" element={<BirthdayThankYou />} />
           </Routes>
         </AnimatePresence>
       </Suspense>

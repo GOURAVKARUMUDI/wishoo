@@ -4,11 +4,26 @@ import { IoArrowForward, IoGiftOutline, IoSparkles } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../../components/PageTransition/PageTransition.jsx';
 import styles from './BirthdayGifts.module.css';
+import clapsUrl from '../../assets/music/claps.mp3';
 
 const messages = ['Not this one… but I love that you tried 🎀', 'A little closer. Your final try is special ✨', 'Congratulations! 🎉 You will receive the Stanley Mug as per your request. 🎁🤍'];
 export default function BirthdayGifts() {
     const navigate = useNavigate(); const [turns, setTurns] = useState(0); const [chosen, setChosen] = useState([]); const [won, setWon] = useState(false); const [message, setMessage] = useState('');
-    const choose = (index) => { if (won || chosen.includes(index)) return; const next = turns + 1; setChosen(v => [...v, index]); setTurns(next); if (next === 3) { setWon(true); setMessage(messages[2]); } else setMessage(messages[next - 1]); };
+    const choose = (index) => {
+        if (won || chosen.includes(index)) return;
+        const next = turns + 1;
+        setChosen(v => [...v, index]);
+        setTurns(next);
+        if (next === 3) {
+            setWon(true);
+            setMessage(messages[2]);
+            const claps = new Audio(clapsUrl);
+            claps.volume = 0.4;
+            claps.play().catch((err) => console.log('Claps play failed:', err));
+        } else {
+            setMessage(messages[next - 1]);
+        }
+    };
     return <PageTransition><main className={styles.page}><div className={styles.confettiGlow} /><section className={styles.content}>
         <span className={styles.eyebrow}>05 • THREE LITTLE CHANCES</span><h1>Pick a Gift 🎁</h1><p className={styles.lead}>Nine boxes. Three choices. And on your third choice, the gift is guaranteed — no matter which box you pick.</p>
         <div className={styles.turnBadge}>TRY {turns} / 3</div>

@@ -5,6 +5,13 @@ import AnimatedButton from './AnimatedButton/AnimatedButton.jsx';
 import FloatingParticles from './FloatingParticles/FloatingParticles.jsx';
 import { PASSCODE_STEPS } from '../config/birthdayConfig.js';
 import styles from './DatePasscodeLock.module.css';
+import popUrl from '../assets/music/pop.mp3';
+
+const playPopSound = () => {
+  const audio = new Audio(popUrl);
+  audio.volume = 0.4; // subtle and calm pop volume
+  audio.play().catch((err) => console.log('Audio play failed:', err));
+};
 
 const steps = PASSCODE_STEPS;
 
@@ -48,6 +55,7 @@ export default function DatePasscodeLock({
         return;
       }
       setUnlocking(true);
+      playPopSound();
       setTimeout(() => onSuccess?.(), 850);
     },
     [current.placeholder?.length, current.value, onSuccess, step, unlocking, value]
@@ -55,6 +63,7 @@ export default function DatePasscodeLock({
 
   const handleDevSkip = useCallback(() => {
     setUnlocking(true);
+    playPopSound();
     setTimeout(() => onSuccess?.(), 400);
   }, [onSuccess]);
 
